@@ -1,0 +1,10 @@
+[project]
+name = "evaluation-stage"
+version = "0.1.0"
+description = "CRISP-DM: Evaluation stage"
+requires-python = ">=3.9"
+dependencies = ["scikit-learn", "numpy", "nltk", "rouge-score"]
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"

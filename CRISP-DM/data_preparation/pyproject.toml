@@ -1,0 +1,10 @@
+[project]
+name = "data-preparation"
+version = "0.1.0"
+description = "CRISP-DM: Data Preparation stage"
+requires-python = ">=3.9"
+dependencies = ["pandas", "numpy", "scikit-learn"]
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"

@@ -6,6 +6,10 @@ paraElPipeline.py
 # C extensions
 *.so
 
+artifacts/
+.ipynb_checkpoints/
+
+
 # Distribution / packaging
 .Python
 build/

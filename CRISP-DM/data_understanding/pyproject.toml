@@ -1,0 +1,10 @@
+[project]
+name = "data-understanding"
+version = "0.1.0"
+description = "CRISP-DM: Data Understanding stage"
+requires-python = ">=3.9"
+dependencies = ["pandas", "datasets"]
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
