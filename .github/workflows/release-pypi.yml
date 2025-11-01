@@ -24,10 +24,13 @@ jobs:
           - deployment
 
     steps:
-      - uses: actions/checkout@v4
-        with: { fetch-depth: 0 }
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - uses: actions/setup-python@v5
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.11"
           cache: pip
@@ -37,10 +40,11 @@ jobs:
           python -m pip install -U pip
           pip install build twine
 
-      # Inserta o pisa version con el tag (vX.Y.Z -> X.Y.Z)
-      - name: Stamp version from tag
+      # Pisa la versión del paquete con el tag (vX.Y.Z -> X.Y.Z)
+      - name: Set version from tag into pyproject.toml
         working-directory: CRISP-DM/${{ matrix.pkg }}
-        env: { TAG: ${{ github.ref_name }} }
+        env:
+          TAG: ${{ github.ref_name }}
         run: |
           V="${TAG#v}"
           python - <<'PY'
@@ -48,12 +52,10 @@ jobs:
           v = os.getenv("V")
           p = pathlib.Path("pyproject.toml")
           s = p.read_text(encoding="utf8")
-          if re.search(r'(?m)^\s*version\s*=\s*".*?"\s*$', s):
-              s = re.sub(r'(?m)^\s*version\s*=\s*".*?"\s*$', f'version = "{v}"', s, count=1)
-          else:
-              s = re.sub(r'(?m)^\[project\]\s*$', f'[project]\nversion = "{v}"', s, count=1)
+          s = re.sub(r'(?m)^\s*version\s*=\s*".*?"\s*$',
+                     f'version = "{v}"', s, count=1)
           p.write_text(s, encoding="utf8")
-          print("Stamped:", v, "->", p)
+          print("Stamped version:", v, "in", p)
           PY
 
       - name: Build sdist & wheel
@@ -66,4 +68,5 @@ jobs:
         env:
           TWINE_USERNAME: __token__
           TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
-        run: python -m twine upload CRISP-DM/${{ matrix.pkg }}/dist/*
+        run: |
+          python -m twine upload CRISP-DM/${{ matrix.pkg }}/dist/*
