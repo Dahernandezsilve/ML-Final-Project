@@ -1,5 +1,5 @@
 [project]
-name = "data-preparation"
+name = "data-preparation-ml"
 version = "0.0.0"
 description = "CRISP-DM: Data Preparation stage"
 requires-python = ">=3.9"
