@@ -1,6 +1,6 @@
 [project]
 name = "evaluation-stage"
-version = "1.2.0"
+version = "0.0.0"
 description = "CRISP-DM: Evaluation stage"
 requires-python = ">=3.9"
 dependencies = ["scikit-learn", "numpy", "nltk", "rouge-score"]
