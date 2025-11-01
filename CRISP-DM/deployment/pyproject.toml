@@ -1,6 +1,6 @@
 [project]
 name = "deployment-stage"
-version = "0.1.0"
+version = "1.2.0"
 description = "CRISP-DM: Deployment stage"
 requires-python = ">=3.9"
 dependencies = ["joblib"]

@@ -1,6 +1,6 @@
 [project]
 name = "data-preparation"
-version = "0.1.0"
+version = "1.2.0"
 description = "CRISP-DM: Data Preparation stage"
 requires-python = ">=3.9"
 dependencies = ["pandas", "numpy", "scikit-learn"]
