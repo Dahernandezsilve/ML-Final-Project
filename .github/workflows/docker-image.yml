@@ -1,0 +1,45 @@
+name: Build & Push Docker image
+
+on:
+  push:
+    branches:
+      - main        # o la rama que uses (puede ser 'master')
+    paths:
+      - 'Dockerfile'
+      - 'CRISP-DM/run_pipelinePyPI.py'
+      - '.github/workflows/docker-image.yml'  # por si cambias este mismo workflow
+
+jobs:
+  docker-image:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Login to Docker Hub
+        run: |
+          echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login \
+            -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+      - name: Build Docker image
+        run: |
+          IMAGE_NAME="${{ secrets.DOCKERHUB_USERNAME }}/ml-crispdm-pipeline"
+          # puedes usar el commit corto como tag
+          SHORT_SHA=$(echo "${GITHUB_SHA}" | cut -c1-7)
+          echo "Building image $IMAGE_NAME:$SHORT_SHA"
+
+          docker build --no-cache -t "$IMAGE_NAME:$SHORT_SHA" .
+
+          # También tag "latest"
+          docker tag "$IMAGE_NAME:$SHORT_SHA" "$IMAGE_NAME:latest"
+
+      - name: Push Docker image
+        run: |
+          IMAGE_NAME="${{ secrets.DOCKERHUB_USERNAME }}/ml-crispdm-pipeline"
+          SHORT_SHA=$(echo "${GITHUB_SHA}" | cut -c1-7)
+
+          docker push "$IMAGE_NAME:$SHORT_SHA"
+          docker push "$IMAGE_NAME:latest"
